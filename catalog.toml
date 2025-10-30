@@ -1,0 +1,295 @@
+# Doku Service Catalog
+version = "1.0.0"
+
+# PostgreSQL
+[services.postgres]
+name = "PostgreSQL"
+description = "Advanced open-source relational database with excellent performance"
+category = "database"
+icon = "🐘"
+tags = ["database", "sql", "relational"]
+
+[services.postgres.links]
+homepage = "https://www.postgresql.org"
+documentation = "https://www.postgresql.org/docs/"
+repository = "https://github.com/postgres/postgres"
+
+[services.postgres.versions."16"]
+image = "postgres:16-alpine"
+description = "PostgreSQL 16 - Latest stable"
+port = 5432
+protocol = "tcp"
+volumes = ["/var/lib/postgresql/data"]
+
+[services.postgres.versions."16".environment]
+POSTGRES_USER = "postgres"
+POSTGRES_PASSWORD = "postgres"
+POSTGRES_DB = "myapp"
+
+[services.postgres.versions."16".healthcheck]
+test = ["CMD-SHELL", "pg_isready -U postgres"]
+interval = "10s"
+timeout = "5s"
+retries = 5
+start_period = "10s"
+
+[services.postgres.versions."16".resources]
+memory_min = "256m"
+memory_max = "1g"
+cpu_min = "0.25"
+cpu_max = "2.0"
+
+[services.postgres.versions."15"]
+image = "postgres:15-alpine"
+description = "PostgreSQL 15"
+port = 5432
+protocol = "tcp"
+volumes = ["/var/lib/postgresql/data"]
+
+[services.postgres.versions."15".environment]
+POSTGRES_USER = "postgres"
+POSTGRES_PASSWORD = "postgres"
+POSTGRES_DB = "myapp"
+
+[services.postgres.versions."15".healthcheck]
+test = ["CMD-SHELL", "pg_isready -U postgres"]
+interval = "10s"
+timeout = "5s"
+retries = 5
+start_period = "10s"
+
+[services.postgres.versions."15".resources]
+memory_min = "256m"
+memory_max = "1g"
+cpu_min = "0.25"
+cpu_max = "2.0"
+
+# MySQL
+[services.mysql]
+name = "MySQL"
+description = "Popular open-source relational database"
+category = "database"
+icon = "🐬"
+tags = ["database", "sql", "relational"]
+
+[services.mysql.links]
+homepage = "https://www.mysql.com"
+documentation = "https://dev.mysql.com/doc/"
+repository = "https://github.com/mysql/mysql-server"
+
+[services.mysql.versions."8.0"]
+image = "mysql:8.0"
+description = "MySQL 8.0"
+port = 3306
+protocol = "tcp"
+volumes = ["/var/lib/mysql"]
+
+[services.mysql.versions."8.0".environment]
+MYSQL_ROOT_PASSWORD = "root"
+MYSQL_DATABASE = "myapp"
+MYSQL_USER = "user"
+MYSQL_PASSWORD = "password"
+
+[services.mysql.versions."8.0".healthcheck]
+test = ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+interval = "10s"
+timeout = "5s"
+retries = 5
+start_period = "30s"
+
+[services.mysql.versions."8.0".resources]
+memory_min = "512m"
+memory_max = "2g"
+cpu_min = "0.5"
+cpu_max = "2.0"
+
+# Redis
+[services.redis]
+name = "Redis"
+description = "In-memory data structure store"
+category = "cache"
+icon = "🔴"
+tags = ["cache", "key-value", "redis"]
+
+[services.redis.links]
+homepage = "https://redis.io"
+documentation = "https://redis.io/docs/"
+repository = "https://github.com/redis/redis"
+
+[services.redis.versions."7.2"]
+image = "redis:7.2-alpine"
+description = "Redis 7.2"
+port = 6379
+protocol = "tcp"
+
+[services.redis.versions."7.2".healthcheck]
+test = ["CMD", "redis-cli", "ping"]
+interval = "5s"
+timeout = "3s"
+retries = 5
+start_period = "5s"
+
+[services.redis.versions."7.2".resources]
+memory_min = "128m"
+memory_max = "512m"
+cpu_min = "0.25"
+cpu_max = "1.0"
+
+# MongoDB
+[services.mongodb]
+name = "MongoDB"
+description = "NoSQL document database"
+category = "database"
+icon = "🍃"
+tags = ["database", "nosql", "document"]
+
+[services.mongodb.links]
+homepage = "https://www.mongodb.com"
+documentation = "https://docs.mongodb.com"
+repository = "https://github.com/mongodb/mongo"
+
+[services.mongodb.versions."7.0"]
+image = "mongo:7.0"
+description = "MongoDB 7.0"
+port = 27017
+protocol = "tcp"
+volumes = ["/data/db"]
+
+[services.mongodb.versions."7.0".environment]
+MONGO_INITDB_ROOT_USERNAME = "admin"
+MONGO_INITDB_ROOT_PASSWORD = "admin"
+
+[services.mongodb.versions."7.0".healthcheck]
+test = ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+interval = "10s"
+timeout = "5s"
+retries = 5
+start_period = "20s"
+
+[services.mongodb.versions."7.0".resources]
+memory_min = "512m"
+memory_max = "2g"
+cpu_min = "0.5"
+cpu_max = "2.0"
+
+# RabbitMQ
+[services.rabbitmq]
+name = "RabbitMQ"
+description = "Message broker with management UI"
+category = "queue"
+icon = "🐰"
+tags = ["queue", "message-broker", "amqp"]
+
+[services.rabbitmq.links]
+homepage = "https://www.rabbitmq.com"
+documentation = "https://www.rabbitmq.com/documentation.html"
+repository = "https://github.com/rabbitmq/rabbitmq-server"
+
+[services.rabbitmq.versions."3.12"]
+image = "rabbitmq:3.12-management-alpine"
+description = "RabbitMQ 3.12 with management"
+port = 5672
+admin_port = 15672
+protocol = "tcp"
+volumes = ["/var/lib/rabbitmq"]
+
+[services.rabbitmq.versions."3.12".environment]
+RABBITMQ_DEFAULT_USER = "guest"
+RABBITMQ_DEFAULT_PASS = "guest"
+
+[services.rabbitmq.versions."3.12".healthcheck]
+test = ["CMD", "rabbitmq-diagnostics", "ping"]
+interval = "30s"
+timeout = "10s"
+retries = 5
+start_period = "30s"
+
+[services.rabbitmq.versions."3.12".resources]
+memory_min = "512m"
+memory_max = "1g"
+cpu_min = "0.5"
+cpu_max = "1.5"
+
+# Nginx
+[services.nginx]
+name = "Nginx"
+description = "High-performance HTTP server"
+category = "webserver"
+icon = "🌐"
+tags = ["webserver", "proxy", "http"]
+
+[services.nginx.links]
+homepage = "https://nginx.org"
+documentation = "https://nginx.org/en/docs/"
+repository = "https://github.com/nginx/nginx"
+
+[services.nginx.versions."1.25"]
+image = "nginx:1.25-alpine"
+description = "Nginx 1.25"
+port = 80
+protocol = "http"
+volumes = ["/usr/share/nginx/html"]
+
+[services.nginx.versions."1.25".healthcheck]
+test = ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost/ || exit 1"]
+interval = "10s"
+timeout = "5s"
+retries = 3
+start_period = "5s"
+
+[services.nginx.versions."1.25".resources]
+memory_min = "64m"
+memory_max = "256m"
+cpu_min = "0.1"
+cpu_max = "0.5"
+
+# MailHog
+[services.mailhog]
+name = "MailHog"
+description = "Email testing tool"
+category = "development"
+icon = "📧"
+tags = ["email", "smtp", "testing"]
+
+[services.mailhog.links]
+homepage = "https://github.com/mailhog/MailHog"
+documentation = "https://github.com/mailhog/MailHog"
+repository = "https://github.com/mailhog/MailHog"
+
+[services.mailhog.versions."latest"]
+image = "mailhog/mailhog:latest"
+description = "MailHog email testing"
+port = 1025
+admin_port = 8025
+protocol = "tcp"
+
+[services.mailhog.versions."latest".resources]
+memory_min = "64m"
+memory_max = "256m"
+cpu_min = "0.1"
+cpu_max = "0.5"
+
+# Adminer
+[services.adminer]
+name = "Adminer"
+description = "Database management tool"
+category = "development"
+icon = "🗄️"
+tags = ["database", "admin", "mysql", "postgres"]
+
+[services.adminer.links]
+homepage = "https://www.adminer.org"
+documentation = "https://www.adminer.org"
+repository = "https://github.com/vrana/adminer"
+
+[services.adminer.versions."latest"]
+image = "adminer:latest"
+description = "Adminer database tool"
+port = 8080
+protocol = "http"
+
+[services.adminer.versions."latest".resources]
+memory_min = "128m"
+memory_max = "256m"
+cpu_min = "0.1"
+cpu_max = "0.5"
