@@ -14,9 +14,34 @@ homepage = "https://www.postgresql.org"
 documentation = "https://www.postgresql.org/docs/"
 repository = "https://github.com/postgres/postgres"
 
+[services.postgres.versions."17"]
+image = "postgres:17-alpine"
+description = "PostgreSQL 17 - Latest release"
+port = 5432
+protocol = "tcp"
+volumes = ["/var/lib/postgresql/data"]
+
+[services.postgres.versions."17".environment]
+POSTGRES_USER = "postgres"
+POSTGRES_PASSWORD = "postgres"
+POSTGRES_DB = "myapp"
+
+[services.postgres.versions."17".healthcheck]
+test = ["CMD-SHELL", "pg_isready -U postgres"]
+interval = "10s"
+timeout = "5s"
+retries = 5
+start_period = "10s"
+
+[services.postgres.versions."17".resources]
+memory_min = "256m"
+memory_max = "1g"
+cpu_min = "0.25"
+cpu_max = "2.0"
+
 [services.postgres.versions."16"]
 image = "postgres:16-alpine"
-description = "PostgreSQL 16 - Latest stable"
+description = "PostgreSQL 16"
 port = 5432
 protocol = "tcp"
 volumes = ["/var/lib/postgresql/data"]
