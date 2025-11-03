@@ -1,0 +1,28 @@
+version: "8.0"
+image: mysql:8.0
+description: MySQL 8.0
+port: 3306
+protocol: tcp
+volumes:
+  - /var/lib/mysql
+environment:
+  MYSQL_DATABASE: myapp
+  MYSQL_PASSWORD: password
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_USER: user
+healthcheck:
+  test:
+    - CMD
+    - mysqladmin
+    - ping
+    - -h
+    - localhost
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memorymin: 512m
+  memorymax: 2g
+  cpumin: "0.5"
+  cpumax: "2.0"

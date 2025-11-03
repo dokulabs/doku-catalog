@@ -1,0 +1,25 @@
+version: latest
+image: signoz/signoz:latest
+description: SigNoz - Open-source APM and observability
+port: 3301
+protocol: http
+volumes:
+  - /var/lib/signoz
+environment:
+  SIGNOZ_LOCAL: "true"
+healthcheck:
+  test:
+    - CMD
+    - wget
+    - --spider
+    - -q
+    - http://localhost:3301/api/v1/health
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 60s
+resources:
+  memory_min: 1g
+  memory_max: 4g
+  cpu_min: "0.5"
+  cpu_max: "2.0"

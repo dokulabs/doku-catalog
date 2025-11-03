@@ -1,0 +1,16 @@
+name: Adminer
+description: Database management tool
+category: development
+icon: "\U0001F5C4️"
+tags:
+  - database
+  - admin
+  - mysql
+  - postgres
+links:
+  homepage: https://www.adminer.org
+  documentation: https://www.adminer.org
+  repository: https://github.com/vrana/adminer
+available_versions:
+  - latest
+latest_version: latest

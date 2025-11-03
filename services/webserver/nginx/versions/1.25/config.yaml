@@ -1,0 +1,20 @@
+version: "1.25"
+image: nginx:1.25-alpine
+description: Nginx 1.25
+port: 80
+protocol: http
+volumes:
+  - /usr/share/nginx/html
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 5s
+resources:
+  memorymin: 64m
+  memorymax: 256m
+  cpumin: "0.1"
+  cpumax: "0.5"

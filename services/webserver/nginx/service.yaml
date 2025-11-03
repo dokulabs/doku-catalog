@@ -1,0 +1,15 @@
+name: Nginx
+description: High-performance HTTP server
+category: webserver
+icon: "\U0001F310"
+tags:
+  - webserver
+  - proxy
+  - http
+links:
+  homepage: https://nginx.org
+  documentation: https://nginx.org/en/docs/
+  repository: https://github.com/nginx/nginx
+available_versions:
+  - "1.25"
+latest_version: "1.25"

@@ -1,0 +1,15 @@
+name: MailHog
+description: Email testing tool
+category: development
+icon: "\U0001F4E7"
+tags:
+  - email
+  - smtp
+  - testing
+links:
+  homepage: https://github.com/mailhog/MailHog
+  documentation: https://github.com/mailhog/MailHog
+  repository: https://github.com/mailhog/MailHog
+available_versions:
+  - latest
+latest_version: latest

@@ -1,0 +1,15 @@
+name: Redis
+description: In-memory data structure store
+category: cache
+icon: "\U0001F534"
+tags:
+  - cache
+  - key-value
+  - redis
+links:
+  homepage: https://redis.io
+  documentation: https://redis.io/docs/
+  repository: https://github.com/redis/redis
+available_versions:
+  - "7.2"
+latest_version: "7.2"

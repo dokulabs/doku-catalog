@@ -1,0 +1,18 @@
+name: SigNoz
+description: Open-source application performance monitoring and observability platform
+category: monitoring
+icon: "\U0001F4CA"
+tags:
+  - monitoring
+  - observability
+  - tracing
+  - logs
+  - metrics
+  - apm
+links:
+  homepage: https://signoz.io
+  documentation: https://signoz.io/docs/
+  repository: https://github.com/SigNoz/signoz
+available_versions:
+  - latest
+latest_version: latest

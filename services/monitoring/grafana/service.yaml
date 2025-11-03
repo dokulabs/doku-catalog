@@ -1,0 +1,15 @@
+name: Grafana
+description: Analytics and monitoring visualization
+category: monitoring
+icon: "\U0001F4CA"
+tags:
+  - monitoring
+  - visualization
+  - metrics
+links:
+  homepage: https://grafana.com
+  documentation: https://grafana.com/docs/
+  repository: https://github.com/grafana/grafana
+available_versions:
+  - "10.2"
+latest_version: "10.2"

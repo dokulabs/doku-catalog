@@ -1,0 +1,11 @@
+version: latest
+image: mailhog/mailhog:latest
+description: MailHog email testing
+port: 1025
+admin_port: 8025
+protocol: tcp
+resources:
+  memorymin: 64m
+  memorymax: 256m
+  cpumin: "0.1"
+  cpumax: "0.5"

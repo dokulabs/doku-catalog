@@ -1,0 +1,10 @@
+version: latest
+image: adminer:latest
+description: Adminer database tool
+port: 8080
+protocol: http
+resources:
+  memorymin: 128m
+  memorymax: 256m
+  cpumin: "0.1"
+  cpumax: "0.5"

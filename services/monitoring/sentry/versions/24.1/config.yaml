@@ -1,0 +1,31 @@
+version: "24.1"
+image: sentry:24.1.0
+description: Sentry 24.1 - Error tracking and performance monitoring
+port: 9000
+protocol: http
+volumes:
+  - /var/lib/sentry/files
+  - /var/lib/sentry/data
+environment:
+  SENTRY_SECRET_KEY: "changeme-secret-key-min-32-chars-long"
+  SENTRY_POSTGRES_HOST: postgres
+  SENTRY_REDIS_HOST: redis
+healthcheck:
+  test:
+    - CMD
+    - wget
+    - --spider
+    - -q
+    - http://localhost:9000/_health/
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 60s
+resources:
+  memory_min: 1g
+  memory_max: 4g
+  cpu_min: "0.5"
+  cpu_max: "2.0"
+dependencies:
+  - postgres
+  - redis

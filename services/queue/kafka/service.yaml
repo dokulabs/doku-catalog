@@ -1,0 +1,16 @@
+name: Apache Kafka
+description: Distributed event streaming platform
+category: queue
+icon: "\U0001F4E8"
+tags:
+  - queue
+  - streaming
+  - kafka
+  - events
+links:
+  homepage: https://kafka.apache.org
+  documentation: https://kafka.apache.org/documentation/
+  repository: https://github.com/apache/kafka
+available_versions:
+  - "3.6"
+latest_version: "3.6"

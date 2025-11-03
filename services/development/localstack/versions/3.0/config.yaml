@@ -1,0 +1,27 @@
+version: "3.0"
+image: localstack/localstack:3.0
+description: LocalStack 3.0 - AWS services locally
+port: 4566
+protocol: http
+volumes:
+  - /var/lib/localstack
+  - /var/run/docker.sock:/var/run/docker.sock
+environment:
+  AWS_DEFAULT_REGION: us-east-1
+  DEBUG: "0"
+  SERVICES: s3,dynamodb,sqs,sns,lambda,kinesis,cloudwatch
+healthcheck:
+  test:
+    - CMD
+    - curl
+    - -f
+    - http://localhost:4566/_localstack/health
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memorymin: 512m
+  memorymax: 2g
+  cpumin: "0.5"
+  cpumax: "2.0"

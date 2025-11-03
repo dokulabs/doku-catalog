@@ -1,0 +1,15 @@
+name: Prometheus
+description: Monitoring system and time series database
+category: monitoring
+icon: "\U0001F525"
+tags:
+  - monitoring
+  - metrics
+  - prometheus
+links:
+  homepage: https://prometheus.io
+  documentation: https://prometheus.io/docs/
+  repository: https://github.com/prometheus/prometheus
+available_versions:
+  - "2.48"
+latest_version: "2.48"

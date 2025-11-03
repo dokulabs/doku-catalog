@@ -1,0 +1,15 @@
+name: MinIO
+description: S3-compatible object storage
+category: storage
+icon: "\U0001F5C4️"
+tags:
+  - storage
+  - s3
+  - object-storage
+links:
+  homepage: https://min.io
+  documentation: https://min.io/docs/
+  repository: https://github.com/minio/minio
+available_versions:
+  - latest
+latest_version: latest

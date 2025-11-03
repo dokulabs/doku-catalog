@@ -1,0 +1,16 @@
+name: MariaDB
+description: MySQL-compatible relational database
+category: database
+icon: "\U0001F42C"
+tags:
+  - database
+  - sql
+  - mariadb
+  - mysql-compatible
+links:
+  homepage: https://mariadb.org
+  documentation: https://mariadb.com/kb/en/
+  repository: https://github.com/MariaDB/server
+available_versions:
+  - "11.2"
+latest_version: "11.2"

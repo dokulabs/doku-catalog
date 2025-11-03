@@ -1,0 +1,24 @@
+version: "17"
+image: postgres:17-alpine
+description: PostgreSQL 17 - Latest release
+port: 5432
+protocol: tcp
+volumes:
+  - /var/lib/postgresql/data
+environment:
+  POSTGRES_DB: myapp
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+healthcheck:
+  test:
+    - CMD-SHELL
+    - pg_isready -U postgres
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 10s
+resources:
+  memorymin: 256m
+  memorymax: 1g
+  cpumin: "0.25"
+  cpumax: "2.0"

@@ -1,0 +1,14 @@
+version: latest
+image: phpmyadmin:latest
+description: phpMyAdmin for MySQL/MariaDB
+port: 80
+protocol: http
+environment:
+  PMA_ARBITRARY: "1"
+  PMA_HOST: ""
+  PMA_PORT: ""
+resources:
+  memorymin: 128m
+  memorymax: 512m
+  cpumin: "0.1"
+  cpumax: "0.5"

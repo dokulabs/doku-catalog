@@ -1,0 +1,10 @@
+version: "1.6"
+image: memcached:1.6-alpine
+description: Memcached 1.6
+port: 11211
+protocol: tcp
+resources:
+  memorymin: 64m
+  memorymax: 512m
+  cpumin: "0.1"
+  cpumax: "1.0"

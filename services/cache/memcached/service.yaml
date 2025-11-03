@@ -1,0 +1,15 @@
+name: Memcached
+description: High-performance distributed memory caching
+category: cache
+icon: "\U0001F4BE"
+tags:
+  - cache
+  - memory
+  - key-value
+links:
+  homepage: https://memcached.org
+  documentation: https://github.com/memcached/memcached/wiki
+  repository: https://github.com/memcached/memcached
+available_versions:
+  - "1.6"
+latest_version: "1.6"

@@ -1,0 +1,17 @@
+name: phpMyAdmin
+description: MySQL/MariaDB administration tool
+category: development
+icon: "\U0001F418"
+tags:
+  - database
+  - admin
+  - mysql
+  - mariadb
+  - php
+links:
+  homepage: https://www.phpmyadmin.net
+  documentation: https://docs.phpmyadmin.net/
+  repository: https://github.com/phpmyadmin/phpmyadmin
+available_versions:
+  - latest
+latest_version: latest

@@ -1,0 +1,29 @@
+version: "1.15"
+image: hashicorp/vault:1.15
+description: HashiCorp Vault 1.15
+port: 8200
+protocol: http
+volumes:
+  - /vault/file
+command:
+  - vault
+  - server
+  - -dev
+  - -dev-listen-address=0.0.0.0:8200
+environment:
+  VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+  VAULT_DEV_ROOT_TOKEN_ID: root
+healthcheck:
+  test:
+    - CMD
+    - vault
+    - status
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
+resources:
+  memorymin: 128m
+  memorymax: 512m
+  cpumin: "0.1"
+  cpumax: "0.5"

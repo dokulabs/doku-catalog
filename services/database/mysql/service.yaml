@@ -1,0 +1,15 @@
+name: MySQL
+description: Popular open-source relational database
+category: database
+icon: "\U0001F42C"
+tags:
+  - database
+  - sql
+  - relational
+links:
+  homepage: https://www.mysql.com
+  documentation: https://dev.mysql.com/doc/
+  repository: https://github.com/mysql/mysql-server
+available_versions:
+  - "8.0"
+latest_version: "8.0"

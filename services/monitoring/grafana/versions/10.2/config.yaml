@@ -1,0 +1,24 @@
+version: "10.2"
+image: grafana/grafana:10.2.0
+description: Grafana 10.2
+port: 3000
+protocol: http
+volumes:
+  - /var/lib/grafana
+environment:
+  GF_SECURITY_ADMIN_PASSWORD: admin
+  GF_SECURITY_ADMIN_USER: admin
+  GF_USERS_ALLOW_SIGN_UP: "false"
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memorymin: 256m
+  memorymax: 1g
+  cpumin: "0.25"
+  cpumax: "1.0"

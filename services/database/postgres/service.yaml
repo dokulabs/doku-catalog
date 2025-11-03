@@ -1,0 +1,17 @@
+name: PostgreSQL
+description: Advanced open-source relational database with excellent performance
+category: database
+icon: "\U0001F418"
+tags:
+  - database
+  - sql
+  - relational
+links:
+  homepage: https://www.postgresql.org
+  documentation: https://www.postgresql.org/docs/
+  repository: https://github.com/postgres/postgres
+available_versions:
+  - "17"
+  - "16"
+  - "15"
+latest_version: "17"

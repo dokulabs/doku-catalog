@@ -1,0 +1,27 @@
+version: "11.2"
+image: mariadb:11.2
+description: MariaDB 11.2
+port: 3306
+protocol: tcp
+volumes:
+  - /var/lib/mysql
+environment:
+  MARIADB_DATABASE: myapp
+  MARIADB_PASSWORD: password
+  MARIADB_ROOT_PASSWORD: root
+  MARIADB_USER: user
+healthcheck:
+  test:
+    - CMD
+    - healthcheck.sh
+    - --connect
+    - --innodb_initialized
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memorymin: 512m
+  memorymax: 2g
+  cpumin: "0.5"
+  cpumax: "2.0"

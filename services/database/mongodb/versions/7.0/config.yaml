@@ -1,0 +1,25 @@
+version: "7.0"
+image: mongo:7.0
+description: MongoDB 7.0
+port: 27017
+protocol: tcp
+volumes:
+  - /data/db
+environment:
+  MONGO_INITDB_ROOT_PASSWORD: admin
+  MONGO_INITDB_ROOT_USERNAME: admin
+healthcheck:
+  test:
+    - CMD
+    - mongosh
+    - --eval
+    - db.adminCommand('ping')
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 20s
+resources:
+  memorymin: 512m
+  memorymax: 2g
+  cpumin: "0.5"
+  cpumax: "2.0"

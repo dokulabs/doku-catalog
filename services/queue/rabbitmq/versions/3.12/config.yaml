@@ -1,0 +1,25 @@
+version: "3.12"
+image: rabbitmq:3.12-management-alpine
+description: RabbitMQ 3.12 with management
+port: 5672
+admin_port: 15672
+protocol: tcp
+volumes:
+  - /var/lib/rabbitmq
+environment:
+  RABBITMQ_DEFAULT_PASS: guest
+  RABBITMQ_DEFAULT_USER: guest
+healthcheck:
+  test:
+    - CMD
+    - rabbitmq-diagnostics
+    - ping
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 30s
+resources:
+  memorymin: 512m
+  memorymax: 1g
+  cpumin: "0.5"
+  cpumax: "1.5"

@@ -1,0 +1,15 @@
+name: MongoDB
+description: NoSQL document database
+category: database
+icon: "\U0001F343"
+tags:
+  - database
+  - nosql
+  - document
+links:
+  homepage: https://www.mongodb.com
+  documentation: https://docs.mongodb.com
+  repository: https://github.com/mongodb/mongo
+available_versions:
+  - "7.0"
+latest_version: "7.0"
