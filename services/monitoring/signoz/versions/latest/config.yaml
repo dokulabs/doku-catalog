@@ -1,25 +1,106 @@
 version: latest
-image: signoz/signoz:latest
-description: SigNoz - Open-source APM and observability
+description: SigNoz - Open-source APM and observability platform
+
+# Multi-container service configuration
+containers:
+  # OpenTelemetry Collector - receives telemetry data
+  - name: otel-collector
+    image: signoz/signoz-otel-collector:0.88.11
+    primary: false
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    environment:
+      OTEL_RESOURCE_ATTRIBUTES: service.name=signoz-otel-collector
+      LOW_CARDINAL_EXCEPTION_GROUPING: "false"
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - /var/lib/signoz/otel-collector
+      - ${CATALOG_DIR}/configs/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:13133/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    resources:
+      memory_min: 256m
+      memory_max: 1g
+      cpu_min: "0.25"
+      cpu_max: "1.0"
+
+  # Query Service - backend API
+  - name: query-service
+    image: signoz/query-service:0.38.1
+    primary: false
+    ports:
+      - "8080:8080"
+    environment:
+      STORAGE: clickhouse
+      ClickHouseUrl: tcp://clickhouse:9000
+      GODEBUG: netdns=go
+      TELEMETRY_ENABLED: "true"
+      DEPLOYMENT_TYPE: docker-standalone-amd
+    depends_on:
+      - otel-collector
+      - clickhouse
+    volumes:
+      - /var/lib/signoz/query-service
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    resources:
+      memory_min: 512m
+      memory_max: 2g
+      cpu_min: "0.5"
+      cpu_max: "2.0"
+
+  # Frontend - UI
+  - name: frontend
+    image: signoz/frontend:0.38.1
+    primary: true
+    ports:
+      - "3301:3301"
+    environment:
+      FRONTEND_PORT: "3301"
+      NEXT_PUBLIC_QUERY_SERVICE_URL: http://query-service:8080
+    depends_on:
+      - query-service
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3301/api/v1/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    resources:
+      memory_min: 256m
+      memory_max: 1g
+      cpu_min: "0.25"
+      cpu_max: "1.0"
+
+# Service-level settings
 port: 3301
 protocol: http
-volumes:
-  - /var/lib/signoz
-environment:
-  SIGNOZ_LOCAL: "true"
-healthcheck:
-  test:
-    - CMD
-    - wget
-    - --spider
-    - -q
-    - http://localhost:3301/api/v1/health
-  interval: 30s
-  timeout: 10s
-  retries: 5
-  start: 60s
+
+# External dependencies
+dependencies_v2:
+  - name: zookeeper
+    version: latest
+    required: true
+  - name: clickhouse
+    version: latest
+    required: true
+    environment:
+      CLICKHOUSE_DB: signoz
+      CLICKHOUSE_USER: default
+
+# Overall resource requirements
 resources:
   memory_min: 1g
   memory_max: 4g
-  cpu_min: "0.5"
-  cpu_max: "2.0"
+  cpu_min: "1.0"
+  cpu_max: "4.0"
+
+# Service-level environment variables
+environment:
+  SIGNOZ_DEPLOYMENT: docker

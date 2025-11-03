@@ -1,0 +1,13 @@
+name: zookeeper
+displayName: Apache Zookeeper
+description: Distributed coordination service for distributed applications
+category: coordination
+icon: 🦓
+tags:
+  - coordination
+  - distributed
+  - consensus
+  - configuration
+website: https://zookeeper.apache.org/
+documentation: https://zookeeper.apache.org/doc/current/
+repository: https://github.com/apache/zookeeper

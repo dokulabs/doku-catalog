@@ -1,0 +1,13 @@
+name: clickhouse
+displayName: ClickHouse
+description: Fast open-source column-oriented database management system
+category: database
+icon: ⚡
+tags:
+  - database
+  - analytics
+  - olap
+  - columnar
+website: https://clickhouse.com/
+documentation: https://clickhouse.com/docs
+repository: https://github.com/ClickHouse/ClickHouse

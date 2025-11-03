@@ -1,0 +1,70 @@
+version: latest
+image: clickhouse/clickhouse-server:latest
+port: 8123
+protocol: http
+
+# Additional ports for ClickHouse
+ports:
+  - "9000:9000"   # Native TCP port
+  - "8123:8123"   # HTTP interface
+  - "9009:9009"   # Inter-server communication
+
+# Environment variables
+environment:
+  CLICKHOUSE_DB: default
+  CLICKHOUSE_USER: default
+  CLICKHOUSE_PASSWORD: ""
+  CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+
+# Volume mounts for persistence
+volumes:
+  - /var/lib/clickhouse
+  - /var/log/clickhouse-server
+  - ${CATALOG_DIR}/configs/cluster.xml:/etc/clickhouse-server/config.d/cluster.xml:ro
+
+# Resource requirements
+resources:
+  memory_min: 512m
+  memory_max: 4g
+  cpu_min: "0.5"
+  cpu_max: "4.0"
+
+# Health check
+healthcheck:
+  test: ["CMD", "wget", "--spider", "-q", "http://localhost:8123/ping"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+
+# Configuration options
+configuration:
+  options:
+    - name: database
+      description: Default database name
+      type: string
+      default: default
+      env_var: CLICKHOUSE_DB
+      required: false
+
+    - name: user
+      description: Default user name
+      type: string
+      default: default
+      env_var: CLICKHOUSE_USER
+      required: false
+
+    - name: password
+      description: Default user password
+      type: password
+      default: ""
+      env_var: CLICKHOUSE_PASSWORD
+      required: false
+
+# Dependencies
+dependencies_v2:
+  - name: zookeeper
+    version: latest
+    required: true
+
+# Documentation
+admin_port: 8123
