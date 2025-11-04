@@ -1,0 +1,16 @@
+name: dozzle
+description: Real-time Docker log viewer with a web UI
+category: monitoring
+icon: 📊
+tags:
+  - monitoring
+  - logs
+  - docker
+  - web-ui
+links:
+  homepage: https://dozzle.dev
+  documentation: https://dozzle.dev/guide
+  repository: https://github.com/amir20/dozzle
+available_versions:
+  - latest
+latest_version: latest

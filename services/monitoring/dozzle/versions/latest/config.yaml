@@ -1,0 +1,32 @@
+version: latest
+description: Dozzle - Real-time Docker log viewer
+
+# Single container service
+image: amir20/dozzle:latest
+port: 8080
+protocol: http
+
+# Mount Docker socket to read container logs
+volumes:
+  - /var/run/docker.sock:/var/run/docker.sock:ro
+
+# Environment variables
+environment:
+  DOZZLE_LEVEL: info
+  DOZZLE_TAILSIZE: "300"
+  DOZZLE_FILTER: "status=running"
+  DOZZLE_NO_ANALYTICS: "true"
+
+# Health check
+healthcheck:
+  test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/healthcheck"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+
+# Resource requirements
+resources:
+  memory_min: 64m
+  memory_max: 256m
+  cpu_min: "0.1"
+  cpu_max: "0.5"
