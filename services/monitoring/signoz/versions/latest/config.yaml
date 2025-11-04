@@ -2,6 +2,28 @@ version: latest
 description: SigNoz - Open-source APM and observability platform
 
 # Multi-container service configuration
+
+# Init containers run once before the service starts (e.g., migrations)
+init_containers:
+  # Sync Migrator - runs synchronous schema migrations
+  - name: migrator-sync
+    image: signoz/signoz-schema-migrator:0.111.16
+    command:
+      - "sync"
+      - "--dsn=tcp://clickhouse:9000"
+    environment: {}
+    depends_on: []
+
+  # Async Migrator - runs async migrations after sync completes
+  - name: migrator-async
+    image: signoz/signoz-schema-migrator:0.111.16
+    command:
+      - "async"
+      - "--dsn=tcp://clickhouse:9000"
+    environment: {}
+    depends_on:
+      - migrator-sync
+
 containers:
   # OpenTelemetry Collector - receives telemetry data
   - name: otel-collector
