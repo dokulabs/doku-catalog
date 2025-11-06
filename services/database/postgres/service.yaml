@@ -12,6 +12,9 @@ links:
   repository: https://github.com/postgres/postgres
 available_versions:
   - "17"
+  - "17-pgvector"
   - "16"
+  - "16-pgvector"
   - "15"
+  - "15-pgvector"
 latest_version: "17"

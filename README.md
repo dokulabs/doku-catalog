@@ -16,7 +16,7 @@ This repository contains service definitions for popular development tools and i
 ## Available Services
 
 ### Databases
-- **PostgreSQL** 🐘 - Advanced relational database (versions: 15, 16)
+- **PostgreSQL** 🐘 - Advanced relational database (versions: 15, 15-pgvector, 16, 16-pgvector, 17, 17-pgvector)
 - **MySQL** 🐬 - Popular relational database (version: 8.0)
 - **MongoDB** 🍃 - NoSQL document database (version: 7.0)
 
@@ -129,6 +129,9 @@ doku install postgres
 
 # Install specific version
 doku install postgres:16
+
+# Install PostgreSQL with pgvector extension (for vector similarity search)
+doku install postgres:17-pgvector
 
 # Install with custom instance name
 doku install postgres:16 --name my-db

@@ -1,0 +1,24 @@
+version: "15-pgvector"
+image: pgvector/pgvector:pg15
+description: PostgreSQL 15 with pgvector extension for vector similarity search
+port: 5432
+protocol: tcp
+volumes:
+  - /var/lib/postgresql/data
+environment:
+  POSTGRES_DB: myapp
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+healthcheck:
+  test:
+    - CMD-SHELL
+    - pg_isready -U postgres
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 10s
+resources:
+  memory_min: 256m
+  memory_max: 1g
+  cpu_min: "0.25"
+  cpu_max: "2.0"
