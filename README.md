@@ -1,17 +1,19 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a collection of pre-configured services ready to run locally.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 24+ pre-configured services ready to run locally with a single command.
 
 ## Overview
 
-This repository contains service definitions for popular development tools and infrastructure services. Each service is defined in TOML format with complete configuration including:
+This repository contains service definitions for popular development tools and infrastructure services. Each service is defined in YAML format with complete configuration including:
 
-- Docker images and versions
-- Port configurations
-- Environment variables
-- Health checks
-- Resource requirements
-- Configuration options
+- 🐳 Docker images and versions
+- 🔌 Port configurations
+- 🔐 Environment variables with defaults
+- ✅ Health checks
+- 💪 Resource requirements
+- ⚙️ Configuration options
+- 🧩 Multi-container support
+- 🔗 Dependency management
 
 ## Available Services
 
@@ -63,56 +65,152 @@ This repository contains service definitions for popular development tools and i
 
 ## Catalog Structure
 
-The catalog is defined in `catalog.toml` with the following structure:
+The catalog uses a hierarchical YAML structure organized by categories:
 
-```toml
-version = "1.0.0"
+```
+doku-catalog/
+├── catalog.yaml          # Catalog metadata
+└── services/            # Service definitions by category
+    ├── database/
+    │   ├── postgres/
+    │   │   ├── service.yaml       # Service metadata
+    │   │   └── versions/
+    │   │       ├── 17/
+    │   │       │   └── config.yaml   # Version configuration
+    │   │       ├── 16/
+    │   │       └── 15/
+    │   ├── mysql/
+    │   └── ...
+    ├── cache/
+    │   ├── redis/
+    │   └── memcached/
+    ├── queue/
+    │   ├── rabbitmq/
+    │   └── kafka/
+    ├── monitoring/
+    │   ├── signoz/        # Multi-container service example
+    │   │   ├── service.yaml
+    │   │   └── versions/
+    │   │       └── latest/
+    │   │           ├── config.yaml
+    │   │           └── configs/     # Configuration files
+    │   └── ...
+    └── ...
+```
 
-[services.<service-name>]
-name = "Display Name"
-description = "Service description"
-category = "database|cache|queue|monitoring|webserver|development"
-icon = "emoji"
-tags = ["tag1", "tag2"]
+### Service Definition Format
 
-[services.<service-name>.links]
-homepage = "URL"
-documentation = "URL"
-repository = "URL"
+**`service.yaml`** - Service metadata:
 
-[services.<service-name>.versions."<version>"]
-image = "docker-image:tag"
-description = "Version description"
-port = 5432
-admin_port = 8080  # Optional
-protocol = "tcp|http|grpc"
+```yaml
+name: PostgreSQL
+description: Advanced open-source relational database
+category: database
+icon: "🐘"
+tags:
+  - database
+  - sql
+  - relational
+links:
+  homepage: https://www.postgresql.org
+  documentation: https://www.postgresql.org/docs/
+  repository: https://github.com/postgres/postgres
+available_versions:
+  - "17"
+  - "17-pgvector"
+  - "16"
+  - "15"
+latest_version: "17"
+```
 
-[services.<service-name>.versions."<version>".environment]
-ENV_VAR = "default-value"
+**`versions/{version}/config.yaml`** - Version configuration:
 
-[services.<service-name>.versions."<version>".volumes]
-volumes = ["/path/in/container"]
+```yaml
+version: "17"
+image: postgres:17-alpine
+description: PostgreSQL 17 - Latest release
+port: 5432
+protocol: tcp
+volumes:
+  - /var/lib/postgresql/data
+environment:
+  POSTGRES_DB: myapp
+  POSTGRES_PASSWORD: postgres
+  POSTGRES_USER: postgres
+healthcheck:
+  test:
+    - CMD-SHELL
+    - pg_isready -U postgres
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 10s
+resources:
+  memorymin: 256m
+  memorymax: 1g
+  cpumin: "0.25"
+  cpumax: "2.0"
+```
 
-[services.<service-name>.versions."<version>".healthcheck]
-test = ["CMD", "health-check-command"]
-interval = "10s"
-timeout = "5s"
-retries = 5
-start_period = "10s"
+### Multi-Container Services
 
-[services.<service-name>.versions."<version>".resources]
-memory_min = "256m"
-memory_max = "1g"
-cpu_min = "0.25"
-cpu_max = "2.0"
+For complex services with multiple containers (like SigNoz):
 
-[[services.<service-name>.versions."<version>".configuration.options]]
-name = "option_name"
-description = "Option description"
-type = "string|int|bool|select"
-default = "default-value"
-required = true
-env_var = "ENV_VAR_NAME"
+```yaml
+version: latest
+description: SigNoz - Open-source APM and observability
+
+# Init containers (run once before service starts)
+init_containers:
+  - name: migrator-sync
+    image: signoz/signoz-schema-migrator:0.111.16
+    command: ["sync", "--dsn=tcp://clickhouse:9000"]
+
+# Main service containers
+containers:
+  - name: otel-collector
+    image: signoz/signoz-otel-collector:0.88.11
+    primary: false
+    ports:
+      - "4317:4317"
+    environment:
+      OTEL_RESOURCE_ATTRIBUTES: service.name=signoz-otel-collector
+
+  - name: query-service
+    image: signoz/query-service:0.38.1
+    primary: false
+    ports:
+      - "8080:8080"
+    depends_on:
+      - otel-collector
+
+  - name: frontend
+    image: signoz/frontend:0.38.1
+    primary: true  # Exposed via Traefik
+    ports:
+      - "3301:3301"
+    depends_on:
+      - query-service
+
+# Service-level port (for Traefik)
+port: 3301
+protocol: http
+
+# External dependencies (auto-installed)
+dependencies_v2:
+  - name: zookeeper
+    version: latest
+    required: true
+  - name: clickhouse
+    version: latest
+    required: true
+
+# Overall resource requirements
+resources:
+  memory_min: 1g
+  memory_max: 4g
+  cpu_min: "1.0"
+  cpu_max: "4.0"
 ```
 
 ## Usage with Doku CLI
@@ -464,8 +562,36 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ## Version History
 
+### 1.1.0 (2025-11-03)
+- **Major update**: Migrated from TOML to hierarchical YAML structure
+- Added 12 new services (total: 24 services)
+- **Multi-container support**: Complex services with multiple containers
+- **Dependency management**: Automatic dependency resolution and installation
+- **Init containers**: Support for one-time setup tasks
+- New services: SigNoz, Sentry, phpMyAdmin, Adminer, and more
+- Enhanced metadata with icons, tags, and documentation links
+- Improved health checks and resource specifications
+
 ### 1.0.0 (2025-10-30)
 - Initial catalog release
 - 12 services across 7 categories
 - Support for multiple service versions
 - Complete health checks and resource specifications
+
+## Roadmap
+
+### Planned Features
+- 📋 Service templates for common stacks (LAMP, MEAN, etc.)
+- 📋 Custom service definitions via CLI
+- 📋 Service health monitoring dashboard
+- 📋 Automated service updates
+- 📋 Community-contributed services
+- 📋 Service composition (predefined multi-service setups)
+- 📋 Environment profiles (development, staging, production)
+
+### Service Requests
+Want to see a service added? [Open an issue](https://github.com/dokulabs/doku-catalog/issues) with:
+- Service name and official website
+- Docker image(s) used
+- Common use cases
+- Default configuration recommendations
