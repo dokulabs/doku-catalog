@@ -12,5 +12,6 @@ links:
   documentation: https://developer.hashicorp.com/vault/docs
   repository: https://github.com/hashicorp/vault
 available_versions:
+  - "1.18"
   - "1.15"
-latest_version: "1.15"
+latest_version: "1.18"

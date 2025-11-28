@@ -1,6 +1,6 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 25 pre-configured services ready to run locally with a single command.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 29 pre-configured services ready to run locally with a single command.
 
 ## Quick Start
 
@@ -28,12 +28,13 @@ doku install rabbitmq
 | **MariaDB** | MySQL-compatible relational database | 11.2 | `doku install mariadb` |
 | **MongoDB** | NoSQL document database | 7.0 | `doku install mongodb` |
 | **ClickHouse** | Fast column-oriented database for analytics | latest | `doku install clickhouse` |
+| **Milvus** | Open-source vector database for AI/ML | 2.4 | `doku install milvus` |
 
 ### Cache & Key-Value Stores
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **Redis** | In-memory data structure store | 7.2 | `doku install redis` |
+| **Redis** | In-memory data structure store | 7.4, 7.2 | `doku install redis` |
 | **Memcached** | High-performance distributed memory caching | 1.6 | `doku install memcached` |
 
 ### Message Queues
@@ -41,20 +42,22 @@ doku install rabbitmq
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
 | **RabbitMQ** | Message broker with management UI | 3.12 | `doku install rabbitmq` |
-| **Apache Kafka** | Distributed event streaming platform | 3.6 | `doku install kafka` |
+| **Apache Kafka** | Distributed event streaming platform | 3.8, 3.6 | `doku install kafka` |
+| **NATS** | Cloud-native messaging system | 2.10 | `doku install nats` |
 
 ### Search & Analytics
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **Elasticsearch** | Distributed search and analytics engine | 8.11 | `doku install elasticsearch` |
+| **Elasticsearch** | Distributed search and analytics engine | 8.15, 8.11 | `doku install elasticsearch` |
 
 ### Monitoring & Observability
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **Grafana** | Analytics and monitoring visualization | 10.2 | `doku install grafana` |
-| **Prometheus** | Monitoring system and time series database | 2.48 | `doku install prometheus` |
+| **Grafana** | Analytics and monitoring visualization | 11.2, 10.2 | `doku install grafana` |
+| **Prometheus** | Monitoring system and time series database | 2.54, 2.48 | `doku install prometheus` |
+| **Loki** | Log aggregation system (pairs with Grafana) | 2.9 | `doku install loki` |
 | **Jaeger** | Distributed tracing platform | 1.52 | `doku install jaeger` |
 | **SigNoz** | Open-source APM and observability platform | latest | `doku install signoz` |
 | **Sentry** | Error tracking and performance monitoring | latest, 24.1 | `doku install sentry` |
@@ -64,7 +67,7 @@ doku install rabbitmq
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **Nginx** | High-performance HTTP server and reverse proxy | 1.25 | `doku install nginx` |
+| **Nginx** | High-performance HTTP server and reverse proxy | 1.27, 1.25 | `doku install nginx` |
 
 ### Development Tools
 
@@ -73,7 +76,8 @@ doku install rabbitmq
 | **MailHog** | Email testing tool with web UI | latest | `doku install mailhog` |
 | **Adminer** | Database management tool | latest | `doku install adminer` |
 | **phpMyAdmin** | MySQL/MariaDB administration tool | latest | `doku install phpmyadmin` |
-| **LocalStack** | Local AWS cloud stack for development | 3.0 | `doku install localstack` |
+| **LocalStack** | Local AWS cloud stack for development | 3.9, 3.0 | `doku install localstack` |
+| **Portainer** | Docker management UI | latest | `doku install portainer` |
 
 ### Storage
 
@@ -85,7 +89,7 @@ doku install rabbitmq
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **HashiCorp Vault** | Secrets management and encryption | 1.15 | `doku install vault` |
+| **HashiCorp Vault** | Secrets management and encryption | 1.18, 1.15 | `doku install vault` |
 | **Keycloak** | Open source identity and access management | 26.0 | `doku install keycloak` |
 
 ### Coordination
@@ -252,10 +256,10 @@ healthcheck:
   timeout: 5s
   retries: 3
 resources:
-  memorymin: 256m
-  memorymax: 1g
-  cpumin: "0.25"
-  cpumax: "1.0"
+  memory_min: 256m
+  memory_max: 1g
+  cpu_min: "0.25"
+  cpu_max: "1.0"
 ```
 
 ## License

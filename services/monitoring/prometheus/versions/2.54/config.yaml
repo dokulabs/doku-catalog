@@ -1,0 +1,24 @@
+version: "2.54"
+image: prom/prometheus:v2.54.0
+description: Prometheus 2.54
+port: 9090
+protocol: http
+volumes:
+  - /prometheus
+  - /etc/prometheus
+healthcheck:
+  test:
+    - CMD
+    - wget
+    - --spider
+    - -q
+    - http://localhost:9090/-/healthy
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
+resources:
+  memory_min: 256m
+  memory_max: 1g
+  cpu_min: "0.25"
+  cpu_max: "1.0"

@@ -1,0 +1,16 @@
+name: NATS
+description: Cloud-native messaging system for modern distributed systems
+category: queue
+icon: "\U0001F4E1"
+tags:
+  - queue
+  - messaging
+  - cloud-native
+  - pubsub
+links:
+  homepage: https://nats.io/
+  documentation: https://docs.nats.io/
+  repository: https://github.com/nats-io/nats-server
+available_versions:
+  - "2.10"
+latest_version: "2.10"

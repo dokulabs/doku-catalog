@@ -11,5 +11,6 @@ links:
   documentation: https://nginx.org/en/docs/
   repository: https://github.com/nginx/nginx
 available_versions:
+  - "1.27"
   - "1.25"
-latest_version: "1.25"
+latest_version: "1.27"

@@ -1,0 +1,31 @@
+version: "2.4"
+image: milvusdb/milvus:v2.4.0
+description: Milvus 2.4 - Vector database for AI
+port: 19530
+protocol: tcp
+ports:
+  - 19530
+  - 9091
+volumes:
+  - /var/lib/milvus
+environment:
+  ETCD_USE_EMBED: "true"
+  ETCD_DATA_DIR: /var/lib/milvus/etcd
+  COMMON_STORAGETYPE: local
+command:
+  - milvus
+  - run
+  - standalone
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:9091/healthz || exit 1
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 90s
+resources:
+  memory_min: 1g
+  memory_max: 4g
+  cpu_min: "0.5"
+  cpu_max: "2.0"

@@ -12,8 +12,10 @@ healthcheck:
   timeout: 3s
   retries: 5
   start: 5s
+volumes:
+  - /data
 resources:
-  memorymin: 128m
-  memorymax: 512m
-  cpumin: "0.25"
-  cpumax: "1.0"
+  memory_min: 128m
+  memory_max: 512m
+  cpu_min: "0.25"
+  cpu_max: "1.0"

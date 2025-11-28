@@ -1,0 +1,16 @@
+name: Loki
+description: Log aggregation system designed to store and query logs
+category: monitoring
+icon: "\U0001F4DD"
+tags:
+  - monitoring
+  - logs
+  - grafana
+  - aggregation
+links:
+  homepage: https://grafana.com/oss/loki/
+  documentation: https://grafana.com/docs/loki/latest/
+  repository: https://github.com/grafana/loki
+available_versions:
+  - "2.9"
+latest_version: "2.9"

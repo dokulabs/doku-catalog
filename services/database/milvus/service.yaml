@@ -1,0 +1,17 @@
+name: Milvus
+description: Open-source vector database for AI and machine learning
+category: database
+icon: "\U0001F9E0"
+tags:
+  - database
+  - vector
+  - ai
+  - machine-learning
+  - embeddings
+links:
+  homepage: https://milvus.io/
+  documentation: https://milvus.io/docs
+  repository: https://github.com/milvus-io/milvus
+available_versions:
+  - "2.4"
+latest_version: "2.4"

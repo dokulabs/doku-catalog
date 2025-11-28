@@ -1,0 +1,24 @@
+version: "2.9"
+image: grafana/loki:2.9.0
+description: Grafana Loki 2.9 - Log aggregation system
+port: 3100
+protocol: http
+volumes:
+  - /loki
+environment:
+  LOKI_AUTH_ENABLED: "false"
+command:
+  - -config.file=/etc/loki/local-config.yaml
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memory_min: 256m
+  memory_max: 1g
+  cpu_min: "0.25"
+  cpu_max: "1.0"

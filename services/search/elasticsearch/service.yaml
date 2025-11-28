@@ -11,5 +11,6 @@ links:
   documentation: https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
   repository: https://github.com/elastic/elasticsearch
 available_versions:
+  - "8.15"
   - "8.11"
-latest_version: "8.11"
+latest_version: "8.15"

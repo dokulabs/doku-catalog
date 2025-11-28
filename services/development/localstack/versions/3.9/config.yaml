@@ -1,0 +1,25 @@
+version: "3.9"
+image: localstack/localstack:3.9
+description: LocalStack 3.9 - Local AWS cloud stack
+port: 4566
+protocol: http
+volumes:
+  - /var/lib/localstack
+  - /var/run/docker.sock:/var/run/docker.sock
+environment:
+  DEBUG: "0"
+  DOCKER_HOST: unix:///var/run/docker.sock
+  SERVICES: s3,sqs,sns,dynamodb,lambda,iam,cloudwatch,ssm,secretsmanager
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:4566/_localstack/health || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memory_min: 512m
+  memory_max: 2g
+  cpu_min: "0.5"
+  cpu_max: "2.0"

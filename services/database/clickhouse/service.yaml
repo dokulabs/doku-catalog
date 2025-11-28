@@ -8,6 +8,7 @@ tags:
   - analytics
   - olap
   - columnar
-website: https://clickhouse.com/
-documentation: https://clickhouse.com/docs
-repository: https://github.com/ClickHouse/ClickHouse
+links:
+  homepage: https://clickhouse.com/
+  documentation: https://clickhouse.com/docs
+  repository: https://github.com/ClickHouse/ClickHouse

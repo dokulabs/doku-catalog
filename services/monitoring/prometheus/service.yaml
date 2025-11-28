@@ -11,5 +11,6 @@ links:
   documentation: https://prometheus.io/docs/
   repository: https://github.com/prometheus/prometheus
 available_versions:
+  - "2.54"
   - "2.48"
-latest_version: "2.48"
+latest_version: "2.54"

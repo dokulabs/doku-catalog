@@ -12,5 +12,6 @@ links:
   documentation: https://kafka.apache.org/documentation/
   repository: https://github.com/apache/kafka
 available_versions:
+  - "3.8"
   - "3.6"
-latest_version: "3.6"
+latest_version: "3.8"

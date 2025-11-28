@@ -1,0 +1,33 @@
+version: "3.8"
+image: apache/kafka:3.8.0
+description: Apache Kafka 3.8
+port: 9092
+protocol: tcp
+volumes:
+  - /var/lib/kafka/data
+environment:
+  CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+  KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+  KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+  KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+  KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://localhost:9093
+  KAFKA_LOG_DIRS: /var/lib/kafka/data
+  KAFKA_NODE_ID: "1"
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+  KAFKA_PROCESS_ROLES: broker,controller
+  KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+  KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+healthcheck:
+  test:
+    - CMD-SHELL
+    - /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 60s
+resources:
+  memory_min: 512m
+  memory_max: 2g
+  cpu_min: "0.5"
+  cpu_max: "2.0"

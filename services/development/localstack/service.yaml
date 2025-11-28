@@ -12,5 +12,6 @@ links:
   documentation: https://docs.localstack.cloud
   repository: https://github.com/localstack/localstack
 available_versions:
+  - "3.9"
   - "3.0"
-latest_version: "3.0"
+latest_version: "3.9"

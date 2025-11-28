@@ -3,8 +3,16 @@ image: memcached:1.6-alpine
 description: Memcached 1.6
 port: 11211
 protocol: tcp
+healthcheck:
+  test:
+    - CMD-SHELL
+    - echo stats | nc localhost 11211 | grep -q pid
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 5s
 resources:
-  memorymin: 64m
-  memorymax: 512m
-  cpumin: "0.1"
-  cpumax: "1.0"
+  memory_min: 64m
+  memory_max: 512m
+  cpu_min: "0.1"
+  cpu_max: "1.0"

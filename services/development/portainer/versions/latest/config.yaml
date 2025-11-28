@@ -1,0 +1,21 @@
+version: latest
+image: portainer/portainer-ce:latest
+description: Portainer CE - Docker management UI
+port: 9000
+protocol: http
+volumes:
+  - /data
+  - /var/run/docker.sock:/var/run/docker.sock
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --no-verbose --tries=1 --spider http://localhost:9000/api/status || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 30s
+resources:
+  memory_min: 128m
+  memory_max: 512m
+  cpu_min: "0.1"
+  cpu_max: "0.5"

@@ -1,0 +1,23 @@
+version: "2.10"
+image: nats:2.10-alpine
+description: NATS 2.10 - Cloud-native messaging
+port: 4222
+protocol: tcp
+ports:
+  - 4222
+  - 8222
+environment:
+  NATS_HTTP_PORT: "8222"
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --no-verbose --tries=1 --spider http://localhost:8222/healthz || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 10s
+resources:
+  memory_min: 64m
+  memory_max: 256m
+  cpu_min: "0.1"
+  cpu_max: "0.5"

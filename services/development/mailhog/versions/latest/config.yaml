@@ -1,11 +1,26 @@
 version: latest
 image: mailhog/mailhog:latest
-description: MailHog email testing
-port: 1025
-admin_port: 8025
-protocol: tcp
+description: MailHog email testing tool
+port: 8025
+protocol: http
+ports:
+  - 1025
+  - 8025
+volumes:
+  - /maildir
+environment:
+  MH_STORAGE: maildir
+  MH_MAILDIR_PATH: /maildir
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:8025/api/v2/messages || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
 resources:
-  memorymin: 64m
-  memorymax: 256m
-  cpumin: "0.1"
-  cpumax: "0.5"
+  memory_min: 64m
+  memory_max: 256m
+  cpu_min: "0.1"
+  cpu_max: "0.5"

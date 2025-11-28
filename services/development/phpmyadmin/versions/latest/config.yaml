@@ -1,14 +1,20 @@
 version: latest
 image: phpmyadmin:latest
-description: phpMyAdmin for MySQL/MariaDB
+description: phpMyAdmin for MySQL/MariaDB administration
 port: 80
 protocol: http
 environment:
   PMA_ARBITRARY: "1"
-  PMA_HOST: ""
-  PMA_PORT: ""
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:80 || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 15s
 resources:
-  memorymin: 128m
-  memorymax: 512m
-  cpumin: "0.1"
-  cpumax: "0.5"
+  memory_min: 128m
+  memory_max: 512m
+  cpu_min: "0.1"
+  cpu_max: "0.5"

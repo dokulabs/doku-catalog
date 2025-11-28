@@ -1,0 +1,16 @@
+name: Portainer
+description: Docker management UI for containers and images
+category: development
+icon: "\U0001F433"
+tags:
+  - docker
+  - management
+  - ui
+  - containers
+links:
+  homepage: https://www.portainer.io/
+  documentation: https://docs.portainer.io/
+  repository: https://github.com/portainer/portainer
+available_versions:
+  - "latest"
+latest_version: "latest"

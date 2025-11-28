@@ -18,8 +18,16 @@ environment:
   KAFKA_PROCESS_ROLES: broker,controller
   KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
   KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+healthcheck:
+  test:
+    - CMD-SHELL
+    - /opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 60s
 resources:
-  memorymin: 512m
-  memorymax: 2g
-  cpumin: "0.5"
-  cpumax: "2.0"
+  memory_min: 512m
+  memory_max: 2g
+  cpu_min: "0.5"
+  cpu_max: "2.0"

@@ -11,5 +11,6 @@ links:
   documentation: https://grafana.com/docs/
   repository: https://github.com/grafana/grafana
 available_versions:
+  - "11.2"
   - "10.2"
-latest_version: "10.2"
+latest_version: "11.2"

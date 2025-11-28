@@ -19,7 +19,7 @@ healthcheck:
   retries: 5
   start: 20s
 resources:
-  memorymin: 512m
-  memorymax: 2g
-  cpumin: "0.5"
-  cpumax: "2.0"
+  memory_min: 512m
+  memory_max: 2g
+  cpu_min: "0.5"
+  cpu_max: "2.0"
