@@ -1,0 +1,19 @@
+name: Keycloak
+description: Open source identity and access management
+category: security
+icon: "\U0001F511"
+tags:
+  - identity
+  - authentication
+  - authorization
+  - oauth
+  - oidc
+  - sso
+  - security
+links:
+  homepage: https://www.keycloak.org
+  documentation: https://www.keycloak.org/documentation
+  repository: https://github.com/keycloak/keycloak
+available_versions:
+  - "26.0"
+latest_version: "26.0"

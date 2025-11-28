@@ -1,0 +1,26 @@
+version: "26.0"
+image: quay.io/keycloak/keycloak:26.0
+description: Keycloak 26.0 - Open source identity and access management
+port: 8080
+protocol: http
+command:
+  - start-dev
+environment:
+  KC_BOOTSTRAP_ADMIN_USERNAME: admin
+  KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+  KC_HTTP_ENABLED: "true"
+  KC_HOSTNAME_STRICT: "false"
+  KC_PROXY_HEADERS: xforwarded
+healthcheck:
+  test:
+    - CMD-SHELL
+    - exec 3<>/dev/tcp/localhost/9000 && echo -e 'GET /health/ready HTTP/1.1\nHost: localhost\nConnection: close\n\n' >&3 && cat <&3 | grep -q '200 OK'
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 60s
+resources:
+  memorymin: 512m
+  memorymax: 2g
+  cpumin: "0.5"
+  cpumax: "2.0"

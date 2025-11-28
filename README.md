@@ -1,6 +1,6 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 24+ pre-configured services ready to run locally with a single command.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 25+ pre-configured services ready to run locally with a single command.
 
 ## Overview
 
@@ -55,13 +55,14 @@ This repository contains service definitions for popular development tools and i
 ### Storage (1 service)
 - **MinIO** 💿 - S3-compatible object storage (version: latest)
 
-### Security (1 service)
+### Security (2 services)
 - **HashiCorp Vault** 🔐 - Secrets management and encryption (version: 1.15)
+- **Keycloak** 🔑 - Open source identity and access management (version: 26.0)
 
 ### Coordination (1 service)
 - **Apache Zookeeper** 🦓 - Distributed coordination service (version: 3.9)
 
-**Total: 24 services across 9 categories**
+**Total: 25 services across 9 categories**
 
 ## Catalog Structure
 
@@ -539,6 +540,9 @@ Services are organized into these categories:
 - **monitoring** - Monitoring and observability tools
 - **webserver** - Web servers and reverse proxies
 - **development** - Development and testing tools
+- **storage** - Object storage and file systems
+- **security** - Identity management and secrets
+- **coordination** - Distributed coordination services
 
 ## Releases
 
