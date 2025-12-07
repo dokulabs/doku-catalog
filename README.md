@@ -23,7 +23,7 @@ doku install rabbitmq
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **PostgreSQL** | Advanced open-source relational database | 17, 17-pgvector, 16, 16-pgvector, 15, 15-pgvector | `doku install postgres` |
+| **PostgreSQL** | Advanced open-source relational database | 18, 18-pgvector, 17, 17-pgvector, 16, 16-pgvector, 15, 15-pgvector | `doku install postgres` |
 | **MySQL** | Popular open-source relational database | 8.0 | `doku install mysql` |
 | **MariaDB** | MySQL-compatible relational database | 11.2 | `doku install mariadb` |
 | **MongoDB** | NoSQL document database | 7.0 | `doku install mongodb` |
@@ -34,7 +34,7 @@ doku install rabbitmq
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **Redis** | In-memory data structure store | 7.4, 7.2 | `doku install redis` |
+| **Redis** | In-memory data structure store | 8.0, 7.4, 7.2 | `doku install redis` |
 | **Memcached** | High-performance distributed memory caching | 1.6 | `doku install memcached` |
 
 ### Message Queues

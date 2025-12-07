@@ -1,0 +1,21 @@
+version: "8.0"
+image: redis:8.0-alpine
+description: Redis 8.0
+port: 6379
+protocol: tcp
+healthcheck:
+  test:
+    - CMD
+    - redis-cli
+    - ping
+  interval: 5s
+  timeout: 3s
+  retries: 5
+  start: 5s
+volumes:
+  - /data
+resources:
+  memory_min: 128m
+  memory_max: 512m
+  cpu_min: "0.25"
+  cpu_max: "1.0"

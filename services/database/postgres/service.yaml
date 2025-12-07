@@ -11,10 +11,12 @@ links:
   documentation: https://www.postgresql.org/docs/
   repository: https://github.com/postgres/postgres
 available_versions:
+  - "18"
+  - "18-pgvector"
   - "17"
   - "17-pgvector"
   - "16"
   - "16-pgvector"
   - "15"
   - "15-pgvector"
-latest_version: "17"
+latest_version: "18"
