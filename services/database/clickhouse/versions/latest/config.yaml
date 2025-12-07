@@ -11,9 +11,9 @@ ports:
 
 # Environment variables
 environment:
-  CLICKHOUSE_DB: default
-  CLICKHOUSE_USER: default
-  CLICKHOUSE_PASSWORD: ""
+  CLICKHOUSE_DB: "default"
+  CLICKHOUSE_USER: "default"
+  CLICKHOUSE_PASSWORD: "default"
   CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
 
 # Volume mounts for persistence
@@ -56,7 +56,7 @@ configuration:
     - name: password
       description: Default user password
       type: password
-      default: ""
+      default: "default"
       env_var: CLICKHOUSE_PASSWORD
       required: false
 
