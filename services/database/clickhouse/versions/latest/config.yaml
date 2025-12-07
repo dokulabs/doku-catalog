@@ -36,30 +36,6 @@ healthcheck:
   timeout: 5s
   retries: 3
 
-# Configuration options
-configuration:
-  options:
-    - name: database
-      description: Default database name
-      type: string
-      default: default
-      env_var: CLICKHOUSE_DB
-      required: false
-
-    - name: user
-      description: Default user name
-      type: string
-      default: default
-      env_var: CLICKHOUSE_USER
-      required: false
-
-    - name: password
-      description: Default user password
-      type: password
-      default: "default"
-      env_var: CLICKHOUSE_PASSWORD
-      required: false
-
 # Dependencies
 dependencies_v2:
   - name: zookeeper
