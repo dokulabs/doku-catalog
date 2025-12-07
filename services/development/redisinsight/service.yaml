@@ -1,0 +1,16 @@
+name: RedisInsight
+description: Official Redis GUI for browsing, analyzing, and managing Redis data
+category: development
+icon: "🔴"
+tags:
+  - redis
+  - admin
+  - gui
+  - cache
+links:
+  homepage: https://redis.io/insight/
+  documentation: https://redis.io/docs/connect/insight/
+  repository: https://github.com/RedisInsight/RedisInsight
+available_versions:
+  - latest
+latest_version: latest

@@ -1,6 +1,6 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 29 pre-configured services ready to run locally with a single command.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 31 pre-configured services ready to run locally with a single command.
 
 ## Quick Start
 
@@ -41,7 +41,7 @@ doku install rabbitmq
 
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
-| **RabbitMQ** | Message broker with management UI | 3.12 | `doku install rabbitmq` |
+| **RabbitMQ** | Message broker with management UI | 4.0, 3.12 | `doku install rabbitmq` |
 | **Apache Kafka** | Distributed event streaming platform | 3.8, 3.6 | `doku install kafka` |
 | **NATS** | Cloud-native messaging system | 2.10 | `doku install nats` |
 
@@ -76,6 +76,8 @@ doku install rabbitmq
 | **MailHog** | Email testing tool with web UI | latest | `doku install mailhog` |
 | **Adminer** | Database management tool | latest | `doku install adminer` |
 | **phpMyAdmin** | MySQL/MariaDB administration tool | latest | `doku install phpmyadmin` |
+| **RedisInsight** | Official Redis GUI for data management | latest | `doku install redisinsight` |
+| **Tabix** | ClickHouse web UI and SQL editor | stable | `doku install tabix` |
 | **LocalStack** | Local AWS cloud stack for development | 3.9, 3.0 | `doku install localstack` |
 | **Portainer** | Docker management UI | latest | `doku install portainer` |
 

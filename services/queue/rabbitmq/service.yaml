@@ -11,5 +11,6 @@ links:
   documentation: https://www.rabbitmq.com/documentation.html
   repository: https://github.com/rabbitmq/rabbitmq-server
 available_versions:
+  - "4.0"
   - "3.12"
-latest_version: "3.12"
+latest_version: "4.0"

@@ -1,0 +1,23 @@
+version: latest
+image: redis/redisinsight:latest
+description: RedisInsight - Official Redis GUI
+port: 5540
+protocol: http
+
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:5540/api/health || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
+
+volumes:
+  - /data
+
+resources:
+  memory_min: 128m
+  memory_max: 512m
+  cpu_min: "0.1"
+  cpu_max: "0.5"

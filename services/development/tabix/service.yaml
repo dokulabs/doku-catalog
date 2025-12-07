@@ -1,0 +1,17 @@
+name: Tabix
+description: Web-based SQL editor and ClickHouse database management interface
+category: development
+icon: "📊"
+tags:
+  - clickhouse
+  - admin
+  - gui
+  - sql
+  - analytics
+links:
+  homepage: https://tabix.io/
+  documentation: https://tabix.io/doc/
+  repository: https://github.com/tabixio/tabix
+available_versions:
+  - stable
+latest_version: stable

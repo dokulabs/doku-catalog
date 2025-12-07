@@ -1,0 +1,27 @@
+version: "4.0"
+image: rabbitmq:4.0-management-alpine
+description: RabbitMQ 4.0 with management UI
+port: 15672
+protocol: http
+ports:
+  - 5672
+  - 15672
+volumes:
+  - /var/lib/rabbitmq
+environment:
+  RABBITMQ_DEFAULT_USER: guest
+  RABBITMQ_DEFAULT_PASS: guest
+healthcheck:
+  test:
+    - CMD
+    - rabbitmq-diagnostics
+    - ping
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start: 30s
+resources:
+  memory_min: 512m
+  memory_max: 1g
+  cpu_min: "0.5"
+  cpu_max: "1.5"

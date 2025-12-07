@@ -1,0 +1,20 @@
+version: stable
+image: spoonest/clickhouse-tabix-web-client:stable
+description: Tabix - ClickHouse Web UI and SQL Editor
+port: 8080
+protocol: http
+
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:8080 || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
+
+resources:
+  memory_min: 64m
+  memory_max: 256m
+  cpu_min: "0.1"
+  cpu_max: "0.5"
