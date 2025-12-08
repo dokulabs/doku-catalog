@@ -1,0 +1,18 @@
+name: Mailpit
+description: Modern email testing tool with web UI (MailHog successor)
+category: development
+icon: "\U0001F4EC"
+tags:
+  - email
+  - smtp
+  - testing
+  - mail
+links:
+  homepage: https://mailpit.axllent.org
+  documentation: https://mailpit.axllent.org/docs/
+  repository: https://github.com/axllent/mailpit
+available_versions:
+  - latest
+  - "1.21"
+  - "1.20"
+latest_version: latest

@@ -1,6 +1,6 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 31 pre-configured services ready to run locally with a single command.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 32 pre-configured services ready to run locally with a single command.
 
 ## Quick Start
 
@@ -74,6 +74,7 @@ doku install rabbitmq
 | Service | Description | Versions | Install Command |
 |---------|-------------|----------|-----------------|
 | **MailHog** | Email testing tool with web UI | latest | `doku install mailhog` |
+| **Mailpit** | Modern email testing tool (MailHog successor) | latest, 1.21, 1.20 | `doku install mailpit` |
 | **Adminer** | Database management tool | latest | `doku install adminer` |
 | **phpMyAdmin** | MySQL/MariaDB administration tool | latest | `doku install phpmyadmin` |
 | **RedisInsight** | Official Redis GUI for data management | latest | `doku install redisinsight` |

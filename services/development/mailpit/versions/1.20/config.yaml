@@ -1,0 +1,26 @@
+version: "1.20"
+image: axllent/mailpit:v1.20
+description: Mailpit 1.20 - Modern email testing tool
+port: 8025
+protocol: http
+ports:
+  - 1025
+  - 8025
+volumes:
+  - /data
+environment:
+  MP_DATABASE: /data/mailpit.db
+  MP_MAX_MESSAGES: "5000"
+healthcheck:
+  test:
+    - CMD-SHELL
+    - wget --spider -q http://localhost:8025/api/v1/info || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start: 10s
+resources:
+  memory_min: 64m
+  memory_max: 256m
+  cpu_min: "0.1"
+  cpu_max: "0.5"
