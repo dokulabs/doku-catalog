@@ -1,0 +1,102 @@
+version: "5.2"
+description: GlitchTip 5.2 - Open-source Sentry-compatible error tracking
+
+# Multi-container service configuration
+# GlitchTip requires a web service and a celery worker
+
+# Init container for database migrations
+init_containers:
+  - name: migrate
+    image: glitchtip/glitchtip:v5.2
+    command:
+      - "./manage.py"
+      - "migrate"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: "${GLITCHTIP_SECRET_KEY}"
+    depends_on: []
+
+containers:
+  # Web service - serves the UI and API
+  - name: web
+    image: glitchtip/glitchtip:v5.2
+    primary: true
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: "${GLITCHTIP_SECRET_KEY}"
+      PORT: "8000"
+      GLITCHTIP_DOMAIN: "https://${INSTANCE_NAME}.${DOKU_DOMAIN}"
+      DEFAULT_FROM_EMAIL: "glitchtip@${DOKU_DOMAIN}"
+      CELERY_WORKER_AUTOSCALE: "1,3"
+      CELERY_WORKER_CONCURRENCY: "2"
+      ENABLE_USER_REGISTRATION: "true"
+      ENABLE_ORGANIZATION_CREATION: "true"
+      REDIS_URL: redis://redis:6379/0
+    depends_on:
+      - worker
+    volumes:
+      - /var/lib/glitchtip/uploads
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8000/_health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start: 60s
+    resources:
+      memory_min: 256m
+      memory_max: 1g
+      cpu_min: "0.25"
+      cpu_max: "1.0"
+
+  # Celery worker - processes background tasks
+  - name: worker
+    image: glitchtip/glitchtip:v5.2
+    primary: false
+    command:
+      - "./bin/run-celery-with-beat.sh"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: "${GLITCHTIP_SECRET_KEY}"
+      CELERY_WORKER_AUTOSCALE: "1,3"
+      CELERY_WORKER_CONCURRENCY: "2"
+      REDIS_URL: redis://redis:6379/0
+    depends_on: []
+    volumes:
+      - /var/lib/glitchtip/uploads
+    resources:
+      memory_min: 256m
+      memory_max: 1g
+      cpu_min: "0.25"
+      cpu_max: "1.0"
+
+# Service-level settings
+port: 8000
+protocol: http
+
+# External dependencies - requires PostgreSQL and Redis
+dependencies_v2:
+  - name: postgres
+    version: "16"
+    required: true
+    environment:
+      POSTGRES_DB: glitchtip
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+  - name: redis
+    version: "7.4"
+    required: true
+
+# Overall resource requirements
+resources:
+  memory_min: 512m
+  memory_max: 2g
+  cpu_min: "0.5"
+  cpu_max: "2.0"
+
+# Service-level environment variables (can be overridden by user)
+environment:
+  GLITCHTIP_SECRET_KEY: ""
+  ENABLE_USER_REGISTRATION: "true"
+  ENABLE_ORGANIZATION_CREATION: "true"

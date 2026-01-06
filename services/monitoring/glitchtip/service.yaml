@@ -1,0 +1,20 @@
+name: GlitchTip
+description: Open-source Sentry-compatible error tracking and performance monitoring
+category: monitoring
+icon: "🐛"
+tags:
+  - monitoring
+  - error-tracking
+  - sentry-compatible
+  - apm
+  - performance
+  - debugging
+  - observability
+links:
+  homepage: https://glitchtip.com
+  documentation: https://glitchtip.com/documentation
+  repository: https://gitlab.com/glitchtip/glitchtip-backend
+available_versions:
+  - latest
+  - "5.2"
+latest_version: latest
