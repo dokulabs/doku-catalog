@@ -2,7 +2,7 @@ version: "5.2"
 description: GlitchTip 5.2 - Open-source Sentry-compatible error tracking
 
 # Multi-container service configuration
-# GlitchTip requires a web service and a celery worker
+# GlitchTip requires a web service, celery worker, postgres, and redis
 
 # Init container for database migrations
 init_containers:
@@ -12,11 +12,73 @@ init_containers:
       - "./manage.py"
       - "migrate"
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      DATABASE_URL: postgres://glitchtip:glitchtip@glitchtip-postgres:5432/glitchtip
       SECRET_KEY: change-me-to-a-random-secret-key
-    depends_on: []
+    depends_on:
+      - glitchtip-postgres
 
 containers:
+  # PostgreSQL database for GlitchTip
+  - name: glitchtip-postgres
+    image: postgres:16-alpine
+    primary: false
+    environment:
+      POSTGRES_DB: glitchtip
+      POSTGRES_USER: glitchtip
+      POSTGRES_PASSWORD: glitchtip
+    volumes:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glitchtip -d glitchtip"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start: 10s
+    resources:
+      memory_min: 128m
+      memory_max: 512m
+      cpu_min: "0.1"
+      cpu_max: "0.5"
+
+  # Redis for Celery task queue
+  - name: glitchtip-redis
+    image: redis:7.4-alpine
+    primary: false
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start: 5s
+    resources:
+      memory_min: 64m
+      memory_max: 256m
+      cpu_min: "0.05"
+      cpu_max: "0.25"
+
+  # Celery worker - processes background tasks
+  - name: worker
+    image: glitchtip/glitchtip:v5.2
+    primary: false
+    command:
+      - "./bin/run-celery-with-beat.sh"
+    environment:
+      DATABASE_URL: postgres://glitchtip:glitchtip@glitchtip-postgres:5432/glitchtip
+      SECRET_KEY: change-me-to-a-random-secret-key
+      CELERY_WORKER_AUTOSCALE: "1,3"
+      CELERY_WORKER_CONCURRENCY: "2"
+      REDIS_URL: redis://glitchtip-redis:6379/0
+    depends_on:
+      - glitchtip-postgres
+      - glitchtip-redis
+    volumes:
+      - /var/lib/glitchtip/uploads
+    resources:
+      memory_min: 256m
+      memory_max: 1g
+      cpu_min: "0.25"
+      cpu_max: "1.0"
+
   # Web service - serves the UI and API
   - name: web
     image: glitchtip/glitchtip:v5.2
@@ -24,19 +86,20 @@ containers:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      DATABASE_URL: postgres://glitchtip:glitchtip@glitchtip-postgres:5432/glitchtip
       SECRET_KEY: change-me-to-a-random-secret-key
       PORT: "8000"
       GLITCHTIP_DOMAIN: https://glitchtip.doku.local
       DEFAULT_FROM_EMAIL: glitchtip@doku.local
-      EMAIL_URL: smtp://mailpit:1025
       CELERY_WORKER_AUTOSCALE: "1,3"
       CELERY_WORKER_CONCURRENCY: "2"
-      ENABLE_USER_REGISTRATION: "true"
-      ENABLE_ORGANIZATION_CREATION: "true"
-      REDIS_URL: redis://redis:6379/0
+      ENABLE_USER_REGISTRATION: "false"
+      ENABLE_ORGANIZATION_CREATION: "false"
+      REDIS_URL: redis://glitchtip-redis:6379/0
     depends_on:
       - worker
+      - glitchtip-postgres
+      - glitchtip-redis
     volumes:
       - /var/lib/glitchtip/uploads
     healthcheck:
@@ -51,66 +114,37 @@ containers:
       cpu_min: "0.25"
       cpu_max: "1.0"
 
-  # Celery worker - processes background tasks
-  - name: worker
-    image: glitchtip/glitchtip:v5.2
-    primary: false
-    command:
-      - "./bin/run-celery-with-beat.sh"
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
-      SECRET_KEY: change-me-to-a-random-secret-key
-      CELERY_WORKER_AUTOSCALE: "1,3"
-      CELERY_WORKER_CONCURRENCY: "2"
-      REDIS_URL: redis://redis:6379/0
-    depends_on: []
-    volumes:
-      - /var/lib/glitchtip/uploads
-    resources:
-      memory_min: 256m
-      memory_max: 1g
-      cpu_min: "0.25"
-      cpu_max: "1.0"
-
 # Service-level settings
 port: 8000
 protocol: http
 
-# No automatic dependencies - user installs these separately
-# This allows reusing existing postgres/redis instances
-
 # Overall resource requirements
 resources:
-  memory_min: 512m
-  memory_max: 2g
-  cpu_min: "0.5"
-  cpu_max: "2.0"
+  memory_min: 704m
+  memory_max: 2.75g
+  cpu_min: "0.65"
+  cpu_max: "2.75"
 
 # Default environment variables
-# Users can override with --env flags
 environment:
   SECRET_KEY: change-me-to-a-random-secret-key
-  DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
-  REDIS_URL: redis://redis:6379/0
-  EMAIL_URL: smtp://mailpit:1025
+  DATABASE_URL: postgres://glitchtip:glitchtip@glitchtip-postgres:5432/glitchtip
+  REDIS_URL: redis://glitchtip-redis:6379/0
   DEFAULT_FROM_EMAIL: glitchtip@doku.local
+  ENABLE_USER_REGISTRATION: "false"
+  ENABLE_ORGANIZATION_CREATION: "false"
 
 # Post-install instructions shown to user
 post_install: |
   ╔═══════════════════════════════════════════════════════════════════════╗
-  ║                    GlitchTip Setup Instructions                       ║
+  ║                    GlitchTip Setup Complete                           ║
   ╚═══════════════════════════════════════════════════════════════════════╝
 
-  GlitchTip requires PostgreSQL, Redis, and optionally a mail server.
-
-  PREREQUISITES (install if not already running):
-    doku install postgres:16 --name postgres --env POSTGRES_DB=glitchtip
-    doku install redis:7.4 --name redis
-    doku install mailpit --name mailpit    # For email testing
+  CREATE ADMIN USER:
+    docker exec -it doku-glitchtip-web ./manage.py createsuperuser
 
   ACCESS:
-    - GlitchTip UI: https://glitchtip.doku.local
-    - Mailpit UI:   https://mailpit.doku.local (view verification emails)
+    URL: https://glitchtip.doku.local
 
   SENTRY SDK USAGE:
     After creating a project in GlitchTip, use the DSN in your app:
@@ -118,6 +152,4 @@ post_install: |
     import sentry_sdk
     sentry_sdk.init(dsn="https://<key>@glitchtip.doku.local/<project_id>")
 
-  CUSTOM CONFIGURATION:
-    Override defaults with --env flags:
-    doku install glitchtip:5.2 --env SECRET_KEY=$(openssl rand -hex 32)
+  NOTE: User registration is disabled. Use createsuperuser to create accounts.
