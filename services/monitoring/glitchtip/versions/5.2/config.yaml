@@ -12,8 +12,8 @@ init_containers:
       - "./manage.py"
       - "migrate"
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
-      SECRET_KEY: "${SECRET_KEY}"
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: change-me-to-a-random-secret-key
     depends_on: []
 
 containers:
@@ -24,17 +24,17 @@ containers:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
-      SECRET_KEY: "${SECRET_KEY}"
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: change-me-to-a-random-secret-key
       PORT: "8000"
-      GLITCHTIP_DOMAIN: "https://${INSTANCE_NAME}.${DOKU_DOMAIN}"
-      DEFAULT_FROM_EMAIL: "${DEFAULT_FROM_EMAIL}"
-      EMAIL_URL: "${EMAIL_URL}"
+      GLITCHTIP_DOMAIN: https://glitchtip.doku.local
+      DEFAULT_FROM_EMAIL: glitchtip@doku.local
+      EMAIL_URL: smtp://mailpit:1025
       CELERY_WORKER_AUTOSCALE: "1,3"
       CELERY_WORKER_CONCURRENCY: "2"
       ENABLE_USER_REGISTRATION: "true"
       ENABLE_ORGANIZATION_CREATION: "true"
-      REDIS_URL: "${REDIS_URL}"
+      REDIS_URL: redis://redis:6379/0
     depends_on:
       - worker
     volumes:
@@ -58,11 +58,11 @@ containers:
     command:
       - "./bin/run-celery-with-beat.sh"
     environment:
-      DATABASE_URL: "${DATABASE_URL}"
-      SECRET_KEY: "${SECRET_KEY}"
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+      SECRET_KEY: change-me-to-a-random-secret-key
       CELERY_WORKER_AUTOSCALE: "1,3"
       CELERY_WORKER_CONCURRENCY: "2"
-      REDIS_URL: "${REDIS_URL}"
+      REDIS_URL: redis://redis:6379/0
     depends_on: []
     volumes:
       - /var/lib/glitchtip/uploads
@@ -86,13 +86,14 @@ resources:
   cpu_min: "0.5"
   cpu_max: "2.0"
 
-# Required environment variables - user must provide these
+# Default environment variables
+# Users can override with --env flags
 environment:
-  SECRET_KEY: ""
-  DATABASE_URL: ""
-  REDIS_URL: ""
-  EMAIL_URL: ""
-  DEFAULT_FROM_EMAIL: "glitchtip@doku.local"
+  SECRET_KEY: change-me-to-a-random-secret-key
+  DATABASE_URL: postgres://postgres:postgres@postgres:5432/glitchtip
+  REDIS_URL: redis://redis:6379/0
+  EMAIL_URL: smtp://mailpit:1025
+  DEFAULT_FROM_EMAIL: glitchtip@doku.local
 
 # Post-install instructions shown to user
 post_install: |
@@ -102,27 +103,21 @@ post_install: |
 
   GlitchTip requires PostgreSQL, Redis, and optionally a mail server.
 
-  1. INSTALL PREREQUISITES (if not already running):
+  PREREQUISITES (install if not already running):
+    doku install postgres:16 --name postgres --env POSTGRES_DB=glitchtip
+    doku install redis:7.4 --name redis
+    doku install mailpit --name mailpit    # For email testing
 
-     doku install postgres:16 --name postgres --env POSTGRES_DB=glitchtip
-     doku install redis:7.4 --name redis
-     doku install mailpit --name mailpit    # Optional: for email testing
+  ACCESS:
+    - GlitchTip UI: https://glitchtip.doku.local
+    - Mailpit UI:   https://mailpit.doku.local (view verification emails)
 
-  2. INSTALL GLITCHTIP with required environment variables:
+  SENTRY SDK USAGE:
+    After creating a project in GlitchTip, use the DSN in your app:
 
-     doku install glitchtip:5.2 \
-       --env SECRET_KEY=$(openssl rand -hex 32) \
-       --env DATABASE_URL=postgres://postgres:postgres@postgres:5432/glitchtip \
-       --env REDIS_URL=redis://redis:6379/0 \
-       --env EMAIL_URL=smtp://mailpit:1025 \
-       --env DEFAULT_FROM_EMAIL=glitchtip@doku.local
+    import sentry_sdk
+    sentry_sdk.init(dsn="https://<key>@glitchtip.doku.local/<project_id>")
 
-  3. ACCESS:
-     - GlitchTip UI: https://glitchtip.doku.local
-     - Mailpit UI:   https://mailpit.doku.local (to view verification emails)
-
-  4. SENTRY SDK USAGE:
-     After creating a project in GlitchTip, use the DSN in your app:
-
-     import sentry_sdk
-     sentry_sdk.init(dsn="https://<key>@glitchtip.doku.local/<project_id>")
+  CUSTOM CONFIGURATION:
+    Override defaults with --env flags:
+    doku install glitchtip:5.2 --env SECRET_KEY=$(openssl rand -hex 32)
