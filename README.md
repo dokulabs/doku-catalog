@@ -1,6 +1,6 @@
 # Doku Service Catalog
 
-Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 32 pre-configured services ready to run locally with a single command.
+Official service catalog for [Doku CLI](https://github.com/dokulabs/doku-cli) - a curated collection of 33 pre-configured services ready to run locally with a single command.
 
 ## Quick Start
 
@@ -80,6 +80,7 @@ doku install rabbitmq
 | **RedisInsight** | Official Redis GUI for data management | latest | `doku install redisinsight` |
 | **Tabix** | ClickHouse web UI and SQL editor | stable | `doku install tabix` |
 | **LocalStack** | Local AWS cloud stack for development | 3.9, 3.0 | `doku install localstack` |
+| **Jupyter Notebook** | Interactive computing and data science notebook | latest, 7.2 | `doku install jupyter` |
 | **Portainer** | Docker management UI | latest | `doku install portainer` |
 
 ### Storage

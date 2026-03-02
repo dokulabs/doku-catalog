@@ -1,0 +1,23 @@
+version: "7.2"
+image: jupyter/base-notebook:notebook-7.2.2
+description: Jupyter Notebook 7.2 - Interactive computing environment
+port: 8888
+protocol: http
+volumes:
+  - /home/jovyan/work
+environment:
+  JUPYTER_ENABLE_LAB: "yes"
+  JUPYTER_TOKEN: doku
+healthcheck:
+  test:
+    - CMD-SHELL
+    - curl -f http://localhost:8888/api || exit 1
+  interval: 10s
+  timeout: 5s
+  retries: 5
+  start: 15s
+resources:
+  memory_min: 256m
+  memory_max: 2g
+  cpu_min: "0.25"
+  cpu_max: "2.0"
